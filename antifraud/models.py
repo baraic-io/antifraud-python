@@ -1,7 +1,7 @@
-import uuid
 import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 class Transaction(BaseModel):
     id: str
@@ -18,8 +18,8 @@ class Transaction(BaseModel):
     merchant_id: str | None = None
     merchant_terminal_id: str | None = None
     merchant_mcc_code: str | None = None
-    date: datetime.datetime | None = None
-    time: datetime.time | None = None
+    date: str | None = None
+    time: str | None = None
     amount: str | None = None
     currency: str | None = None
     payment_mode: str | None = None
@@ -34,9 +34,12 @@ class Transaction(BaseModel):
 
 class AFTransaction(BaseModel):
     transaction: Transaction
-    af_id: uuid.UUID | None = None
-    af_datetime: str | None = None
-    af_adddate: str | None = None
+    af_id: Optional[str] = Field(default=None, alias="_AF_ID")
+    af_datetime: Optional[str] = Field(default=None, alias="_AF_DATETIME")
+    af_adddate: Optional[str] = Field(default=None, alias="_AF_ADD_DATE")
+
+    class Config:
+        populate_by_name = True
 
 
 class SyncResolution(BaseModel):

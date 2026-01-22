@@ -26,7 +26,7 @@ class Client:
 
     async def validate_transaction_sync(self, transaction: Transaction) -> SyncResolution:
         url = f"{self.config.hostname}/api/gtwsvc/sync/transaction"
-        data = transaction.model_dump()
+        data = transaction.model_dump(by_alias=True)
 
         try:
             response = await self.__do_request(url=url, data=data)
@@ -38,7 +38,7 @@ class Client:
 
     async def validate_transaction_async(self, transaction: Transaction) -> AsyncResolution:
         url = f"{self.config.hostname}/api/gtwsvc/async/transaction"
-        data = transaction.model_dump()
+        data = transaction.model_dump(by_alias=True)
 
         try:
             response = await self.__do_request(url=url, data=data)
@@ -50,7 +50,7 @@ class Client:
         
     async def validate_transaction_by_aml(self, af_transaction: AFTransaction) -> ServiceResolution:
         url = f"{self.config.hostname}/api/amlsvc/validate"
-        data = af_transaction.model_dump()
+        data = af_transaction.model_dump(by_alias=True)
 
         try:
             response = await self.__do_request(url=url, data=data)
