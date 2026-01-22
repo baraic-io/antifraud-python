@@ -1,7 +1,7 @@
 import aiohttp
 import json
 
-from .models import Transaction, SyncResolution, AsyncResolution
+from .models import Transaction, SyncResolution, AsyncResolution, ServiceResolution, AFTransaction
 from .exceptions import ErrRequestFailed, ErrInternalError
 
 class ClientConfig:
@@ -43,6 +43,18 @@ class Client:
         try:
             response = await self.__do_request(url=url, data=data)
             return AsyncResolution.model_validate(response)
+        except ErrRequestFailed as e:
+            raise e
+        except Exception as e:
+            raise ErrInternalError(message=f"internal error: {e}")
+        
+    async def validate_transaction_by_aml(self, af_transaction: AFTransaction) -> ServiceResolution:
+        url = f"{self.config.hostname}/api/amlsvc/validate"
+        data = af_transaction.model_dump()
+
+        try:
+            response = await self.__do_request(url=url, data=data)
+            return ServiceResolution.model_validate(response)
         except ErrRequestFailed as e:
             raise e
         except Exception as e:

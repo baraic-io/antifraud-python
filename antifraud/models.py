@@ -35,6 +35,8 @@ class Transaction(BaseModel):
 class AFTransaction(BaseModel):
     transaction: Transaction
     af_id: uuid.UUID | None = None
+    af_datetime: str | None = None
+    af_adddate: str | None = None
 
 
 class SyncResolution(BaseModel):
@@ -58,3 +60,21 @@ class AsyncResolution(BaseModel):
     af_id: str | None = None
     af_datetime: str | None = None
     af_add_date: str | None = None
+
+
+class ServiceResolution(BaseModel):
+    id: str | None = None
+    af_id: str | None = None
+    txn_id: str | None = None
+    service: str | None = None
+    error: str | None = None
+    details: dict | None = None
+    date: datetime.datetime | None = None
+    action: dict | None = None
+    process_time: int | None = None
+    retry: int | None = None
+    fraud: bool | None = None
+    blocked: bool | None = None
+    validated: bool | None = None
+    alert: bool | None = None
+    in_white_list: bool | None = None
